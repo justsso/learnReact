@@ -19,6 +19,53 @@
 		<script src="build/browser.min.js"></script>
 		<script type="text/babel">
 			
+			//函数式组件
+			function ActionLink() {
+				function handleClick(e){
+					e.preventDefault();
+					console.log('the link was clicked!');
+				}
+				return (
+					<a href="#" onClick ={handleClick}>
+						Click me
+					</a>
+				)
+			}
+			
+			ReactDOM.render(
+				<ActionLink />,
+				document.getElementById("root")
+			)
+			
+			
+			//类组件
+			class Toggle extends React.Component {
+				constructor( props){
+					super( props);
+					this.state = { isToggleOn :true}
+					//要明确的绑定this,
+					//es6 class中没有this
+					this.handleClick = this.handleClick.bind(this);
+				}
+				handleClick(){
+					this.setState(prevState => ({
+						isToggleOn: !prevState.isToggleOn
+					}));
+				}
+				
+				render(){
+					return (
+						<button onClick={this.handleClick}>
+							{ this.state.isToggleOn ? 'ON' :'OFF'}
+						</button>
+					)
+				}
+			}
+			ReactDOM.render(
+				<Toggle />,
+				document.getElementById("mydiv")
+			)
+			
 		</script>
 	</body>
 </html>

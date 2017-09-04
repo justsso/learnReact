@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="root">
+			
+		</div>
+		
+		<div id="div1">
+			
+		</div>
+		
+		<div id="div2">
+			
+		</div>
+		<div id="div3">
+			
+		</div>
+		<script src="build/react.js"></script>
+		<script src="build/react-dom.js"></script>
+		<script src="build/browser.min.js"></script>
+		
+		<script type="text/babel">
+			//在 React 中，转换数组为 元素列表 的方式
+			
+			const numbers = [1,2,3,4,5];
+			const listItems = numbers.map( (number)=>
+				<li key={number*2}>{ number }</li>
+			  );
+			
+			ReactDOM.render(
+				<ul>
+					{ listItems}
+				</ul>,
+				document.getElementById("root")
+			)
+			
+			
+			//列表组件
+			function ListItems(props){
+				const myNumber = props.number;
+				
+				let numberLis =   myNumber.map((number)=>
+					<li key={number.toString()}>
+						{number}
+					</li>
+				)
+				
+				return (
+					<ol> {numberLis} </ol>
+				)
+				
+			}
+			
+			let newNumber = [2,3,2,2,4,5,8];
+			ReactDOM.render(
+				<ListItems   number = {newNumber} />,
+				document.getElementById("div1")
+			)
+			
+			//键（Keys）
+			//键(Keys) 帮助 React 标识哪个项被修改、添加或者移除了。数组中的每一个元素都应该
+//			有一个唯一不变的键(Keys)来标识
+			
+			//使用keys提取组件，应该把key放在自定义的组件上面，而不应该放在真正的html标签上面
+			
+//			键是React的一个内部映射，但其不会传递给组件的内部。如果你需要在组件中使用相同的值，
+//可以明确使用一个不同名字的 prop 传入。
+
+			
+			//--key在同辈元素中必须是唯一的
+			
+			
+			
+			
+			
+			function Blog( props){
+				
+				
+				const siderBar = (
+					<ul>
+						{ props.posts.map( (post)=>
+							<li key={post.id}>
+								{post.title}
+							</li>
+						) }
+						
+					</ul>
+				);
+				
+				const content = props.posts.map((post)=>
+			
+					<div key={post.id}>
+						<h3>
+							{post.title}
+						</h3>
+						<p>
+							{post.content}
+						</p>
+					</div>
+				);
+				
+				return (
+					<div>
+						{siderBar}
+						<hr />
+						{content}
+					</div>
+				);
+			}
+			
+			const posts = [
+				{ id: 1, title:'Hello,world',content:'this is content2'},
+				{ id: 2, title:'goodmorning', content: 'this is content2'}
+			];
+			ReactDOM.render(
+				<Blog posts={posts} />,
+				document.getElementById("div2")
+			)
+			
+			//在JSX中嵌入map(),{ }中可以写任何的js表达式
+			
+			function NumberList(props){
+				const numbers = props.numbers;
+				
+				return (
+					<ul class={props.className} >
+						{
+							numbers.map((number) =>
+								<ListItem key={ number.toString()}
+								value={ number} />
+							)
+						}
+					</ul>
+					
+				);
+			}
+						
+			function ListItem(props) {
+			  // 正确！这里不需要指定 key ：
+			  return <li>{props.value}</li>;
+			}
+			
+			//在div3中使用JSX嵌入map()
+			const numbers3 = [8,7,6,5,4,3];
+			const clsN ="ul1";
+			ReactDOM.render(
+				<NumberList className={clsN} numbers={numbers3} />,
+				document.getElementById("div3")
+			)
+			
+		</script>
+	</body>
+</html>
