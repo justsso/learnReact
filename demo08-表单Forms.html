@@ -1,20 +1,186 @@
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
+        <style>
+            /*input{*/
+                /*background: tomato;*/
+            /*}*/
+        </style>
 	</head>
 	<body>
 		<div id="root">
 			
 		</div>
+        <div id="div1"></div>
+        <div id="div2"></div>
+        <div id="div3"></div>
 		<script src="build/react.js"></script>
 		<script src="build/react-dom.js"></script>
 		<script src="build/browser.min.js"></script>
 		<script type="text/babel">
 //			受控组件
+			//通过使React的state成为单一数据源原则来结合这两个像是
+			
+		//形式，并根据用户输入进行更新。
 			
 			
+			class NameForm extends React.Component {
+				constructor(props){
+					super(props);
+					this.state = {value:""};
+					
+					this.handleChange = this.handleChange.bind(this);
+					this.handleSubmit = this.handleSubmit.bind(this);
+					//在js中，类方法默认是没有绑定的
+					//如果没有手动绑定this，那么this将指向undefined
+					
+				}
+				
+				handleChange(e){
+					//e是集成事件对象
+					this.setState({value: e.target.value.toUpperCase()});
+				}
+
+				handleSubmit(e) {
+					alert("A name was submit: "+ this.state.value);
+					e.preventDefault();
+				}
+				render(){
+				    return(
+				        <form onSubmit={ this.handleSubmit} >
+							<label>
+								Name:
+								<input type="text" onChange={  this.handleChange } value={this.state.value}/>
+							</label>
+							<input type="submit" value="submit"/>
+						</form>
+					);
+				}
+			}
+			ReactDOM.render(
+					<NameForm />,
+					document.getElementById("root")
+			)
+//	textare 标签
+//   在React 中，<textarea> 的赋值使用value属性代替
+
+            class EassyForm extends React.Component{
+			    constructor(props){
+			        super(props);
+			        this.state={ value:"请输入一些文字，你想的"};
+
+			        this.handleChange = this.handleChange.bind(this);
+			        this.handleSubmit = this.handleSubmit.bind(this);
+                }
+
+                handleChange(e){
+			        this.setState({value: e.target.value});
+                }
+                handleSubmit(e){
+                    alert("you write:"+ this.state.value);
+                    e.preventDefault();
+                }
+                render(){
+                    return(
+                        <form onSubmit={this.handleSubmit}>
+                            <textarea value={ this.state.value} onChange={this.handleChange}></textarea>
+                            <input type="submit" value="submit"/>
+                        </form>
+                    )
+                }
+            }
+            ReactDOM.render(
+                <EassyForm />,
+                document.getElementById('div1')
+            )
+
+//            select标签
+// select 标签中使用了一个 value 属性，用来记录选中了哪一个选项
+
+                class FavForm extends React.Component{
+			        constructor(props){
+			            super(props);
+			            this.state={ value: "苹果"};
+			            this.handleChange = this.handleChange.bind(this);
+			            this.handleSubmit = this.handleSubmit.bind(this);
+
+                    }
+                    handleChange(e){
+			            this.setState({ value: e.target.value});
+                    }
+                    handleSubmit(e){
+                        alert('你喜欢吃的水果是:'+this.state.value);
+                        e.preventDefault();
+                    }
+                    render(){
+			            return(
+			                <form onSubmit={ this.handleSubmit}>
+                                <label>
+                                    选择你喜爱的水果：
+                                    <select value={this.state.value} onChange={this.handleChange}>
+                                        <option value="苹果">苹果</option>
+                                        <option value="橘子">橘子</option>
+                                        <option value="香蕉">香蕉</option>
+                                        <option value="椰子">椰子</option>
+                                    </select>
+                                </label>
+                                <input type="submit"    value="提交"/>
+                            </form>
+                        )
+                    }
+                }
+                ReactDOM.render(
+                    <FavForm />,
+                    document.getElementById("div2")
+                )
+
+
+//处理多个输入元素，可以为多个元素设置name属性，通过event。target.name确定用户动了哪一个元素
+//
+            class Reservation extends React.Component{
+			    constructor(props){
+			        super( props);
+                    this.state = {
+                        isGoing: true,
+                        numberOfGuests:2
+                    };
+                    this.handleInputChange = this.handleInputChange.bind(this);
+                }
+                handleInputChange(e){
+			        const target = e.target;
+			        const value = target.type == 'checkbox' ? target.checked :
+                        target.value;
+			        const name = target.name;
+			        this.setState({
+//			            ES6计算的属性名称语法来更新与给定输入名称相对应的 state(状态) 键
+			            [name]:value
+                    })
+                }
+                render(){
+                    return (
+                        <form>
+                            <label>
+                                Is going:
+                                <input name="isGoing" type="checkbox" onChange={ this.handleInputChange}/>
+                            </label>
+                            <label>
+                                Number of guests:
+                                <input type="number" name="numberOfGuests"
+                                value={this.state.numberOfGuests}
+                                onChange={this.handleInputChange}/>
+                            </label>
+                        </form>
+                    )
+                }
+            }
+            ReactDOM.render(
+                <Reservation/>,
+                document.getElementById("div3")
+            )
+
 		</script>
 	</body>
 </html>

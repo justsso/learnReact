@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo10-组合和继承</title>
+</head>
+<body>
+<div id="root"></div>
+<script src="build/react.js"></script>
+<script src="build/react-dom.js"></script>
+<script src="build/browser.min.js"></script>
+<script type="text/babel">
+    /*
+    * 组合来实现代码重用
+    * 使用children prop 来直接传递子元素
+    *
+    *
+    * */
+function FancyBorder( props) {
+    return (
+        <div className={ 'FancyBorder FancyBorder-' + props.color}>
+            { props.children}
+        </div>
+    );
+}
+
+function WelcomeDialog() {
+    return(
+        <FancyBorder color="blue">
+            <h1 className="Dislog-title">
+                Welcome
+            </h1>
+
+            <p className="Dialog-message">
+                Thank you for visiting our spacecraft!
+            </p>
+        </FancyBorder>
+    )
+}
+ReactDOM.render(
+    <WelcomeDialog/>,
+   document.getElementById("root")
+)
+
+//    React.createElement(tagName,type,children)
+//    JSX 语法中，一个组件的内部所有东西都是 props的  children属性
+
+//    特例
+    function Dialog(props){
+        return (
+            <FancyBorder color="blue">
+                <h1 className=""
+
+            </FancyBorder>
+
+        )
+    }
+</script>
+</body>
+</html>
