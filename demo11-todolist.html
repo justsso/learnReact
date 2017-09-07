@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>react实现todolist</title>
+</head>
+<body>
+<div id="root"></div>
+<script src="build/react.js"></script>
+<script src="build/react-dom.js"></script>
+<script src="build/browser.min.js"></script>
+<script src="build/jquery.min.js"></script>
+<script type="text/babel">
+
+    var  TodoList  =  React.createClass({
+       getInitialState: function(){
+           return ({
+                todolist: []
+           })
+        },
+        handleChange: function(rows){
+            this.setState({todolist: rows});
+        },
+        render: function(){
+            return(
+                <div>
+                    <TypeNew  onAdd={ this.handleChange} todo={this.state.todolist} />
+                    <ListTodo onDel={this.handleChange} todo={this.state.todolist} />
+                </div>
+            )
+        }
+    });
+
+    var  TypeNew  =  React.createClass({
+
+        handleAdd: function (e) {
+
+            e.preventDefault();//阻止默认事件，页面不要跳转
+            //获取新输入的数据，添加到todo数组中
+            console.dir(e);
+            console.log(this.refs);
+            var newthing = this.refs.inputnew.value.trim();
+            var rows = this.props.todo;
+            console.log(newthing);
+            if(newthing!=""){
+                rows.push(newthing);
+                this.props.onAdd(rows);
+            }
+            this.refs.inputnew.value = "";
+        },
+        render: function(){
+            return(
+                <form onSubmit={this.handleAdd}>
+                    <input ref="inputnew" type="text" placeholder="输入你接下来的计划" />
+                </form>
+            );
+        }
+    });
+
+var  ListTodo =  React.createClass({
+
+        handleDel: function (e) {
+            //删除某一条
+
+            var keyIndex = e.target.getAttribute("data-key");
+            this.props.todo.splice(keyIndex,1);
+            this.props.onDel( this.props.todo);
+
+        },
+        render: function () {
+            return(
+                <ul>
+                    {
+                        this.props.todo.map(function (item,i) {
+                            return(
+                                <li key={i}>
+                                    <label>{item}</label>
+                                    <button className="destory"  onClick={this.handleDel} data-key={i}>delete</button>
+                                </li>
+                            )
+                        }.bind(this))
+                    }
+                </ul>
+            )
+        }
+});
+ReactDOM.render(
+    <TodoList/>,
+    document.getElementById("root")
+)
+</script>
+</body>
+</html>
