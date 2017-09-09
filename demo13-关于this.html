@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="root"></div>
+<script src="build/react.js"></script>
+<script src="build/react-dom.js"></script>
+<script src="build/browser.min.js"></script>
+<script src="build/jquery.min.js"></script>
+
+<script type="text/babel">
+    class Hello extends React.Component{
+        render(){
+            return (
+                <div>
+                    <p onClick={ console.log( this)/*  this --> Hello 组件对象*/     }>123</p>
+                    <p onClick={ this.clickhandle}>Hello ,world</p>
+                    <p ref="p2"onClick={this.clickHandle2.bind(this)}>Ji shu ya</p>
+                </div>
+            )
+        }
+        clickhandle(){
+//            this --->null
+            console.log(this);
+
+        }
+        clickHandle2(){
+//            this--->Hello 组件对象
+            console.log( this);
+        }
+    }
+
+    ReactDOM.render(
+        <Hello/>,
+        document.getElementById("root")
+    )
+</script>
+
+
+
+</body>
+</html>
