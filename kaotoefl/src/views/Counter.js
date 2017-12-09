@@ -1,14 +1,35 @@
 import React from 'react';
-class Counter extends React.Component{
+import store from '../Store'
+import Actions from '../actions'
+
+
+
+
+class CounterContainer extends React.Component{
     constructor(props){
         super(props);
-        this.state = {
-            count: props.initValue
-        }
+        this.state = getOwnState()
 
 
         this.onClickIncrementButton = this.onClickIncrementButton.bind(this);
         this.onClickDecrementButton = this.onClickDecrementButton.bind(this);
+    }
+
+    getOwnState(){
+        return {
+            value: store.getState()[this.props.caption]
+        }
+    }
+
+    onChange(){
+        this.setState( this.getOwnState());
+    }
+
+    componentDidMount(){
+        store.subscribe( this.onChange);
+    }
+    componentWillMount(){
+        store.unsubsscribe( this.onChange)
     }
     render(){
         const { caption} = this.props.caption;
@@ -55,4 +76,8 @@ class Counter extends React.Component{
 Counter.defaultProps = {
     initValue: 0
 }
+
+
+
+class Counter extends
 export default Counter;
